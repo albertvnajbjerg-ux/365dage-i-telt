@@ -3,7 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snorky Tracker - 365 Dage i Telt</title>
+    <title>Snorky Tracker</title>
+    
+    <!-- Gør det muligt at gemme som en rigtig app på iPhone -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Snorky">
+    
+    <!-- Genererer 🏕️ som app-ikon på din iPhones startskærm -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://w3.org viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏕️</text></svg>">
+
     <style>
         :root {
             --primary: #2e7d32;
@@ -154,25 +163,18 @@
 <body>
 
 <div class="container">
-    <!-- INDBYGGET VEKTOR LOGO -->
     <div class="logo-container">
         <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://w3.org">
-            <!-- Grøn cirkel-badge baggrund -->
             <circle cx="50" cy="50" r="46" fill="none" stroke="#2e7d32" stroke-width="4"/>
             <circle cx="50" cy="50" r="41" fill="#e8f5e9"/>
-            <!-- Bjerge / Graner i baggrunden -->
             <polygon points="25,65 40,40 55,65" fill="#a5d6a7"/>
             <polygon points="45,65 60,35 75,65" fill="#81c784"/>
-            <!-- Telt -->
             <polygon points="30,70 50,42 70,70" fill="#2e7d32"/>
-            <!-- Teltåbning (lys inderside) -->
             <polygon points="50,42 50,70 65,70" fill="#1b5e20"/>
             <polygon points="42,70 50,54 58,70" fill="#fff9c4"/>
-            <!-- Lille lejrbål -->
             <circle cx="50" cy="74" r="3" fill="#ffb74d"/>
             <polygon points="48,74 50,68 52,74" fill="#e65100"/>
             <polygon points="46,75 54,75 50,72" fill="#795548"/>
-            <!-- Stjerner på himlen -->
             <path d="M35,28 L36,31 L39,31 L37,33 L38,36 L35,34 L32,36 L33,33 L31,31 L34,31 Z" fill="#fbc02d"/>
             <path d="M65,24 L65.5,26 L67,26 L65.8,27 L66.3,28.5 L65,27.5 L63.7,28.5 L64.2,27 L63,26 L64.5,26 Z" fill="#fbc02d"/>
         </svg>
@@ -181,7 +183,6 @@
     <h1>Snorky Tracker</h1>
     <p class="subtitle">⛺ 365 nætter i telt ud af 400 dage</p>
 
-    <!-- STATISTIK -->
     <div class="stats-grid">
         <div class="stat-card">
             <div>Nætter i telt</div>
@@ -195,7 +196,6 @@
         </div>
     </div>
 
-    <!-- REGISTRERING -->
     <div class="input-card">
         <div class="form-group">
             <label for="date-input">Dato for overnatning</label>
@@ -211,12 +211,9 @@
         <button class="btn-add" onclick="tilfoejDag()">Registrer nat</button>
     </div>
 
-    <!-- LOGBOG -->
     <div class="history-card">
         <h3 style="margin-top: 0;">Logbog</h3>
-        <ul class="history-list" id="history-list">
-            <!-- Dage indsættes her via JavaScript -->
-        </ul>
+        <ul class="history-list" id="history-list"></ul>
     </div>
 </div>
 
