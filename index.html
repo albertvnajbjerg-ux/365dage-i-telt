@@ -26,16 +26,28 @@
             width: 100%;
             max-width: 500px;
         }
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            margin: 15px 0 5px 0;
+        }
+        .logo-svg {
+            width: 90px;
+            height: 90px;
+        }
         h1 {
             text-align: center;
             color: var(--primary);
-            margin-bottom: 5px;
+            margin: 5px 0;
+            font-size: 1.8rem;
         }
         .subtitle {
             text-align: center;
             margin-top: 0;
+            margin-bottom: 25px;
             color: #666;
             font-size: 0.9rem;
+            font-weight: 500;
         }
         .stats-grid {
             display: grid;
@@ -142,8 +154,32 @@
 <body>
 
 <div class="container">
-    <h1>⛺ Snorky Tracker</h1>
-    <p class="subtitle">365 nætter i telt ud af 400 dage</p>
+    <!-- INDBYGGET VEKTOR LOGO -->
+    <div class="logo-container">
+        <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://w3.org">
+            <!-- Grøn cirkel-badge baggrund -->
+            <circle cx="50" cy="50" r="46" fill="none" stroke="#2e7d32" stroke-width="4"/>
+            <circle cx="50" cy="50" r="41" fill="#e8f5e9"/>
+            <!-- Bjerge / Graner i baggrunden -->
+            <polygon points="25,65 40,40 55,65" fill="#a5d6a7"/>
+            <polygon points="45,65 60,35 75,65" fill="#81c784"/>
+            <!-- Telt -->
+            <polygon points="30,70 50,42 70,70" fill="#2e7d32"/>
+            <!-- Teltåbning (lys inderside) -->
+            <polygon points="50,42 50,70 65,70" fill="#1b5e20"/>
+            <polygon points="42,70 50,54 58,70" fill="#fff9c4"/>
+            <!-- Lille lejrbål -->
+            <circle cx="50" cy="74" r="3" fill="#ffb74d"/>
+            <polygon points="48,74 50,68 52,74" fill="#e65100"/>
+            <polygon points="46,75 54,75 50,72" fill="#795548"/>
+            <!-- Stjerner på himlen -->
+            <path d="M35,28 L36,31 L39,31 L37,33 L38,36 L35,34 L32,36 L33,33 L31,31 L34,31 Z" fill="#fbc02d"/>
+            <path d="M65,24 L65.5,26 L67,26 L65.8,27 L66.3,28.5 L65,27.5 L63.7,28.5 L64.2,27 L63,26 L64.5,26 Z" fill="#fbc02d"/>
+        </svg>
+    </div>
+
+    <h1>Snorky Tracker</h1>
+    <p class="subtitle">⛺ 365 nætter i telt ud af 400 dage</p>
 
     <!-- STATISTIK -->
     <div class="stats-grid">
@@ -185,28 +221,21 @@
 </div>
 
 <script>
-    // Sæt dags dato i inputfeltet automatisk
     document.getElementById('date-input').valueAsDate = new Date();
-
-    // Hent data fra LocalStorage eller start forfra
     let data = JSON.parse(localStorage.getItem('snorkyData')) || [];
 
-    // Opdaterer hele skærmen med de rigtige tal og historik
     function opdaterVisning() {
-        // Sortér datoer så den nyeste er øverst
         data.sort((a, b) => new Date(b.dato) - new Date(a.dato));
         
         let udeDage = data.filter(d => d.type === 'ude').length;
         let indeDage = data.filter(d => d.type === 'inde').length;
 
-        // Opdater tal
         document.getElementById('count-ude').innerText = udeDage;
         document.getElementById('left-ude').innerText = Math.max(0, 365 - udeDage) + " tilbage";
 
         document.getElementById('count-inde').innerText = indeDage;
         document.getElementById('left-inde').innerText = Math.max(0, 35 - indeDage) + " tilbage";
 
-        // Byg historiklisten
         let listHTML = '';
         if (data.length === 0) {
             listHTML = '<li style="color: #999; text-align: center; padding: 20px 0;">Ingen registreringer endnu</li>';
@@ -215,7 +244,6 @@
                 let badgeClass = item.type === 'ude' ? 'badge-ude' : 'badge-inde';
                 let badgeText = item.type === 'ude' ? 'Ude' : 'Inde';
                 
-                // Formater dato til pænt dansk format (DD-MM-YYYY)
                 let d = new Date(item.dato);
                 let formateretDato = d.getDate().toString().padStart(2, '0') + '-' + (d.getMonth() + 1).toString().padStart(2, '0') + '-' + d.getFullYear();
 
@@ -231,12 +259,9 @@
             });
         }
         document.getElementById('history-list').innerHTML = listHTML;
-        
-        // Gem til browseren
         localStorage.setItem('snorkyData', JSON.stringify(data));
     }
 
-    // Tilføj en ny dag
     function tilfoejDag() {
         let datoInput = document.getElementById('date-input').value;
         let typeInput = document.getElementById('type-input').value;
@@ -246,19 +271,16 @@
             return;
         }
 
-        // Tjek om datoen allerede findes
         let findesAllerede = data.some(d => d.dato === datoInput);
         if (findesAllerede) {
             alert('Du har allerede registreret en overnatning for denne dato.');
             return;
         }
 
-        // Gem den nye dag
         data.push({ dato: datoInput, type: typeInput });
         opdaterVisning();
     }
 
-    // Slet en dag fra listen
     function sletDag(index) {
         if(confirm('Er du sikker på, at du vil slette denne registrering?')) {
             data.splice(index, 1);
@@ -266,7 +288,6 @@
         }
     }
 
-    // Kør visningen første gang siden åbnes
     opdaterVisning();
 </script>
 
