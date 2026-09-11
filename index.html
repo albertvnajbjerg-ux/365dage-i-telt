@@ -219,7 +219,49 @@
 
 <script>
     document.getElementById('date-input').valueAsDate = new Date();
-    let data = JSON.parse(localStorage.getItem('snorkyData')) || [];
+
+    const BACKUP_KEY = 'snorkyDataBackup';
+    const FASTE_UDE_DAGE_FRA = '2026-08-23';
+    const FASTE_UDE_DAGE_TIL = '2026-09-11';
+
+    function hentData() {
+        for (const key of ['snorkyData', BACKUP_KEY]) {
+            try {
+                const gemt = JSON.parse(localStorage.getItem(key));
+                if (Array.isArray(gemt)) {
+                    return gemt.filter(d => d && typeof d.dato === 'string' && (d.type === 'ude' || d.type === 'inde'));
+                }
+            } catch (_) {
+                // Prøv backup, hvis primær data er beskadiget.
+            }
+        }
+        return [];
+    }
+
+    function gemData() {
+        const json = JSON.stringify(data);
+        try {
+            localStorage.setItem(BACKUP_KEY, json);
+            localStorage.setItem('snorkyData', json);
+        } catch (_) {
+            // Appen kan stadig bruges, selv hvis browserens lager er fuldt.
+        }
+    }
+
+    function markerFasteUdeDage() {
+        const start = new Date(FASTE_UDE_DAGE_FRA + 'T00:00:00Z');
+        const slut = new Date(FASTE_UDE_DAGE_TIL + 'T00:00:00Z');
+
+        for (let dag = start; dag <= slut; dag.setUTCDate(dag.getUTCDate() + 1)) {
+            const dato = dag.toISOString().slice(0, 10);
+            const eksisterende = data.find(d => d.dato === dato);
+            if (eksisterende) eksisterende.type = 'ude';
+            else data.push({ dato, type: 'ude' });
+        }
+    }
+
+    let data = hentData();
+    markerFasteUdeDage();
 
     function opdaterVisning() {
         data.sort((a, b) => new Date(b.dato) - new Date(a.dato));
@@ -256,7 +298,7 @@
             });
         }
         document.getElementById('history-list').innerHTML = listHTML;
-        localStorage.setItem('snorkyData', JSON.stringify(data));
+        gemData();
     }
 
     function tilfoejDag() {
