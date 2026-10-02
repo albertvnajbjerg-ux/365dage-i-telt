@@ -28,7 +28,7 @@
 
         body {
             margin: 0;
-            padding: 18px;
+            padding: 16px;
             background: linear-gradient(180deg, #edf5ed 0%, var(--bg) 100%);
             color: var(--text);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -39,98 +39,108 @@
             margin: 0 auto;
         }
 
-        .card {
-            background: var(--card);
-            border-radius: 16px;
-            box-shadow: var(--shadow);
-            padding: 18px 16px;
-            margin-bottom: 18px;
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
         }
 
-        .logo-container {
+        .logo-title {
             display: flex;
-            justify-content: center;
-            margin: 6px 0 10px;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
         }
 
         .logo-svg {
-            width: 88px;
-            height: 88px;
+            width: 60px;
+            height: 60px;
+            flex-shrink: 0;
         }
 
-        h1 {
+        .title-group h1 {
             margin: 0;
-            text-align: center;
             color: var(--primary-dark);
-            font-size: clamp(1.8rem, 4vw, 2.3rem);
+            font-size: 1.6rem;
+            line-height: 1.1;
         }
 
-        .subtitle {
-            margin: 8px 0 18px;
-            text-align: center;
+        .title-group p {
+            margin: 2px 0 0;
             color: var(--muted);
-            font-size: 0.95rem;
-            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .btn-settings {
+            background: none;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 8px 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: 14px;
+            box-shadow: var(--shadow);
+            padding: 14px;
+            margin-bottom: 14px;
         }
 
         .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 10px;
         }
 
         .stat-card {
             background: #f9faf8;
             border: 1px solid var(--line);
-            border-radius: 14px;
-            padding: 14px 10px;
+            border-radius: 12px;
+            padding: 12px;
             text-align: center;
         }
 
         .stat-card .label {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--muted);
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
         .stat-number {
-            font-size: 1.9rem;
+            font-size: 2.2rem;
             font-weight: 800;
             color: var(--primary);
             line-height: 1;
-            margin: 4px 0;
+            margin: 3px 0;
         }
 
         .stat-number.red { color: var(--secondary); }
 
         .stat-meta {
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             color: var(--muted);
         }
 
-        .settings-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
         .form-group {
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             font-size: 0.8rem;
             font-weight: 700;
             color: var(--muted);
         }
 
         input[type="date"],
-        input[type="number"],
         select {
             width: 100%;
-            padding: 11px 12px;
+            padding: 10px;
             border-radius: 10px;
             border: 1px solid #dfe3d8;
             font-size: 1rem;
@@ -141,10 +151,10 @@
         button {
             width: 100%;
             border: none;
-            border-radius: 12px;
-            padding: 12px 14px;
+            border-radius: 10px;
+            padding: 10px;
             font-weight: 700;
-            font-size: 0.96rem;
+            font-size: 0.9rem;
             cursor: pointer;
             transition: transform 0.12s ease, opacity 0.12s ease;
         }
@@ -159,47 +169,49 @@
         .btn-secondary {
             background: #6b7d68;
             color: white;
+            font-size: 0.85rem;
+            padding: 8px;
         }
 
         .btn-danger {
             background: var(--secondary);
             color: white;
+            font-size: 0.85rem;
+            padding: 8px;
         }
 
         .btn-ghost {
             background: #edf1ec;
             color: var(--text);
-        }
-
-        .controls-row {
-            display: grid;
-            gap: 8px;
-            margin-top: 8px;
+            font-size: 0.85rem;
+            padding: 8px;
         }
 
         .day-grid {
             display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 8px;
-            margin-top: 12px;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            margin-top: 10px;
         }
 
         .day-pill {
             border: 1px solid var(--line);
-            border-radius: 12px;
+            border-radius: 8px;
             background: #f5f7f4;
-            padding: 8px 6px;
+            padding: 6px 3px;
             text-align: center;
-            font-size: 0.76rem;
+            font-size: 0.65rem;
             font-weight: 700;
             cursor: pointer;
             color: var(--text);
-            transition: background 0.15s ease, border-color 0.15s ease, transform 0.12s ease;
+            transition: background 0.15s ease, border-color 0.15s ease;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .day-pill:hover {
-            transform: translateY(-1px);
-        }
+        .day-pill:active { transform: scale(0.95); }
 
         .day-pill.ude {
             background: #e6f5e7;
@@ -213,16 +225,11 @@
             color: var(--secondary-dark);
         }
 
-        .day-pill.empty {
-            opacity: 0.25;
-            pointer-events: none;
-        }
-
         .history-list {
             list-style: none;
             padding: 0;
             margin: 0;
-            max-height: 260px;
+            max-height: 300px;
             overflow-y: auto;
         }
 
@@ -230,8 +237,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 0;
+            padding: 8px 0;
             border-bottom: 1px solid var(--line);
+            font-size: 0.9rem;
         }
 
         .history-item:last-child { border-bottom: none; }
@@ -244,11 +252,11 @@
 
         .badge {
             display: inline-block;
-            min-width: 46px;
+            min-width: 40px;
             text-align: center;
             border-radius: 999px;
-            padding: 4px 8px;
-            font-size: 0.72rem;
+            padding: 3px 7px;
+            font-size: 0.65rem;
             font-weight: 800;
             color: white;
         }
@@ -260,24 +268,83 @@
             width: auto;
             background: transparent;
             color: #8a8a8a;
-            font-size: 1.15rem;
-            padding: 4px 7px;
+            font-size: 1rem;
+            padding: 4px 6px;
         }
 
         .btn-delete:hover { color: var(--secondary); }
 
         .muted {
             color: var(--muted);
-            font-size: 0.82rem;
+            font-size: 0.8rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 18px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal h2 {
+            margin: 0 0 12px;
+            color: var(--primary-dark);
+        }
+
+        .close-btn {
+            float: right;
+            font-size: 1.5rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--muted);
+            padding: 0;
+            width: auto;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .controls-row {
+            display: grid;
+            gap: 6px;
+            margin-top: 8px;
         }
 
         @media (max-width: 440px) {
-            .settings-grid, .stats-grid, .day-grid {
-                grid-template-columns: 1fr 1fr;
+            .title-group h1 {
+                font-size: 1.3rem;
+            }
+            
+            .stat-number {
+                font-size: 1.8rem;
             }
 
             .day-grid {
-                grid-template-columns: repeat(3, minmax(0, 1fr));
+                grid-template-columns: repeat(7, 1fr);
             }
         }
     </style>
@@ -285,25 +352,29 @@
 <body>
 
 <div class="container">
-    <div class="logo-container">
-        <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="50" r="46" fill="none" stroke="#2e7d32" stroke-width="4"/>
-            <circle cx="50" cy="50" r="41" fill="#e8f5e9"/>
-            <polygon points="25,65 40,40 55,65" fill="#a5d6a7"/>
-            <polygon points="45,65 60,35 75,65" fill="#81c784"/>
-            <polygon points="30,70 50,42 70,70" fill="#2e7d32"/>
-            <polygon points="50,42 50,70 65,70" fill="#1b5e20"/>
-            <polygon points="42,70 50,54 58,70" fill="#fff9c4"/>
-            <circle cx="50" cy="74" r="3" fill="#ffb74d"/>
-            <polygon points="48,74 50,68 52,74" fill="#e65100"/>
-            <polygon points="46,75 54,75 50,72" fill="#795548"/>
-            <path d="M35,28 L36,31 L39,31 L37,33 L38,36 L35,34 L32,36 L33,33 L31,31 L34,31 Z" fill="#fbc02d"/>
-            <path d="M65,24 L65.5,26 L67,26 L65.8,27 L66.3,28.5 L65,27.5 L63.7,28.5 L64.2,27 L63,26 L64.5,26 Z" fill="#fbc02d"/>
-        </svg>
+    <div class="header">
+        <div class="logo-title">
+            <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="46" fill="none" stroke="#2e7d32" stroke-width="4"/>
+                <circle cx="50" cy="50" r="41" fill="#e8f5e9"/>
+                <polygon points="25,65 40,40 55,65" fill="#a5d6a7"/>
+                <polygon points="45,65 60,35 75,65" fill="#81c784"/>
+                <polygon points="30,70 50,42 70,70" fill="#2e7d32"/>
+                <polygon points="50,42 50,70 65,70" fill="#1b5e20"/>
+                <polygon points="42,70 50,54 58,70" fill="#fff9c4"/>
+                <circle cx="50" cy="74" r="3" fill="#ffb74d"/>
+                <polygon points="48,74 50,68 52,74" fill="#e65100"/>
+                <polygon points="46,75 54,75 50,72" fill="#795548"/>
+                <path d="M35,28 L36,31 L39,31 L37,33 L38,36 L35,34 L32,36 L33,33 L31,31 L34,31 Z" fill="#fbc02d"/>
+                <path d="M65,24 L65.5,26 L67,26 L65.8,27 L66.3,28.5 L65,27.5 L63.7,28.5 L64.2,27 L63,26 L64.5,26 Z" fill="#fbc02d"/>
+            </svg>
+            <div class="title-group">
+                <h1>Snorky</h1>
+                <p id="subtitle-text">365 nætter i telt</p>
+            </div>
+        </div>
+        <button class="btn-settings" onclick="toggleModal()">⚙️</button>
     </div>
-
-    <h1>Snorky Tracker</h1>
-    <p class="subtitle">⛺ <span id="subtitle-text">365 nætter i telt</span></p>
 
     <div class="stats-grid">
         <div class="stat-card">
@@ -319,6 +390,36 @@
     </div>
 
     <div class="card">
+        <div class="form-group">
+            <label for="date-input">Registrer nat</label>
+            <input type="date" id="date-input">
+        </div>
+        <div class="form-group">
+            <label for="type-input">Type</label>
+            <select id="type-input">
+                <option value="ude">Sover ude (Telt/Terrasse)</option>
+                <option value="inde">Sover inde (Fridag)</option>
+            </select>
+        </div>
+        <button class="btn-primary" onclick="tilfoejDag()">Registrer</button>
+    </div>
+
+    <div class="card">
+        <h3 style="margin:0 0 6px; color: var(--primary-dark); font-size: 0.9rem;">Periode oversigt</h3>
+        <div id="day-grid" class="day-grid"></div>
+    </div>
+
+    <div class="card">
+        <h3 style="margin:0 0 6px; color: var(--primary-dark); font-size: 0.9rem;">Logbog</h3>
+        <ul class="history-list" id="history-list"></ul>
+    </div>
+</div>
+
+<div id="settings-modal" class="modal">
+    <div class="modal-content">
+        <button class="close-btn" onclick="toggleModal()">✕</button>
+        <h2>Indstillinger</h2>
+
         <div class="settings-grid">
             <div class="form-group">
                 <label for="config-from">Start dato</label>
@@ -339,41 +440,13 @@
         </div>
 
         <div class="controls-row">
-            <button class="btn-primary" onclick="gemIndstillinger()">Gem indstillinger</button>
-            <button class="btn-secondary" onclick="sætAlleTilUde()">Sæt alle dage i perioden til ude</button>
-            <button class="btn-ghost" onclick="resetTilStandard()">Reset til standardperiode</button>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="form-group">
-            <label for="date-input">Dato for overnatning</label>
-            <input type="date" id="date-input">
-        </div>
-        <div class="form-group">
-            <label for="type-input">Hvor sov du?</label>
-            <select id="type-input">
-                <option value="ude">Sover ude (Telt/Terrasse)</option>
-                <option value="inde">Sover inde (Fridag)</option>
-            </select>
-        </div>
-        <button class="btn-primary" onclick="tilfoejDag()">Registrer nat</button>
-    </div>
-
-    <div class="card">
-        <h3 style="margin:0 0 8px; color: var(--primary-dark);">Periodeoversigt</h3>
-        <div id="day-grid" class="day-grid"></div>
-    </div>
-
-    <div class="card">
-        <h3 style="margin:0 0 8px; color: var(--primary-dark);">Logbog</h3>
-        <ul class="history-list" id="history-list"></ul>
-
-        <div class="controls-row" style="margin-top: 14px;">
-            <button class="btn-secondary" onclick="eksporterData()">Eksporter backup</button>
-            <button class="btn-secondary" onclick="importerData()">Importér backup</button>
+            <button class="btn-primary" onclick="gemIndstillinger(); toggleModal();">Gem</button>
+            <button class="btn-ghost" onclick="sætAlleTilUde()">Sæt alle dage til ude</button>
+            <button class="btn-ghost" onclick="resetTilStandard()">Reset</button>
+            <button class="btn-secondary" onclick="eksporterData()">📥 Eksporter</button>
+            <button class="btn-secondary" onclick="importerData()">📤 Importér</button>
             <input type="file" id="import-file" accept=".json" style="display:none;">
-            <button class="btn-danger" onclick="nulstilAlt()">Slet alle data</button>
+            <button class="btn-danger" onclick="nulstilAlt()">🗑️ Slet alt</button>
         </div>
     </div>
 </div>
@@ -391,6 +464,11 @@
 
     let config = loadConfig();
     let data = loadData();
+
+    function toggleModal() {
+        const modal = document.getElementById('settings-modal');
+        modal.classList.toggle('show');
+    }
 
     function loadConfig() {
         try {
@@ -441,14 +519,11 @@
 
     function ensureDatesInPeriod() {
         const range = getRangeDates(config.startDato, config.slutDato);
-
         for (const iso of range) {
             if (!data.some(item => item.dato === iso)) {
                 data.push({ dato: iso, type: 'ude' });
             }
         }
-
-        data = data.filter(item => !item || !item.dato || item.dato === '' || item.dato >= config.startDato && item.dato <= config.slutDato || item.dato < config.startDato || item.dato > config.slutDato);
         saveData();
     }
 
@@ -467,23 +542,23 @@
         document.getElementById('count-inde').textContent = indeDage;
         document.getElementById('left-ude').textContent = Math.max(0, config.targetUde - udeDage) + ' tilbage';
         document.getElementById('left-inde').textContent = Math.max(0, config.targetInde - indeDage) + ' tilbage';
-        document.getElementById('subtitle-text').textContent = `${config.targetUde} nætter i telt ud af ${config.targetUde + config.targetInde} dage`;
+        document.getElementById('subtitle-text').textContent = `${config.targetUde} nætter i telt`;
     }
 
     function renderDayGrid() {
         const grid = document.getElementById('day-grid');
         grid.innerHTML = '';
 
-        const sorted = [...new Set(getRangeDates(config.startDato, config.slutDato).concat(data.map(d => d.dato)))].sort();
-        const uniq = [...new Set(sorted)];
-
-        uniq.forEach((iso) => {
-            const item = data.find(d => d.dato === iso) || { dato: iso, type: 'ude' };
+        const range = getRangeDates(config.startDato, config.slutDato);
+        range.forEach((iso) => {
+            const item = data.find(d => d.dato === iso);
+            const type = item ? item.type : 'ude';
+            
             const btn = document.createElement('button');
             btn.type = 'button';
-            btn.className = `day-pill ${item.type === 'ude' ? 'ude' : 'inde'}`;
-            btn.textContent = formatDateDK(iso).split('-').slice(0, 2).join('-');
-            btn.title = `${formatDateDK(iso)} — ${item.type === 'ude' ? 'Ude' : 'Inde'}`;
+            btn.className = `day-pill ${type}`;
+            btn.textContent = new Date(iso + 'T00:00:00Z').getUTCDate();
+            btn.title = formatDateDK(iso);
             btn.addEventListener('click', () => toggleDateType(iso));
             grid.appendChild(btn);
         });
@@ -494,11 +569,11 @@
         const sorted = [...data].sort((a, b) => new Date(b.dato) - new Date(a.dato));
 
         if (!sorted.length) {
-            list.innerHTML = '<li class="muted" style="padding: 18px 0; text-align: center;">Ingen registreringer endnu.</li>';
+            list.innerHTML = '<li class="muted" style="padding: 12px 0; text-align: center;">Ingen registreringer endnu.</li>';
             return;
         }
 
-        list.innerHTML = sorted.map((item, index) => {
+        list.innerHTML = sorted.map((item) => {
             const badgeClass = item.type === 'ude' ? 'badge-ude' : 'badge-inde';
             const badgeText = item.type === 'ude' ? 'Ude' : 'Inde';
             return `
@@ -520,8 +595,6 @@
         renderHistory();
         saveData();
     }
-
-    function nop() {}
 
     function tilfoejDag() {
         const dato = document.getElementById('date-input').value;
@@ -555,7 +628,7 @@
     }
 
     function sletDag(dato) {
-        if (!confirm('Slet registreringen for denne dato?')) return;
+        if (!confirm('Slet denne registrering?')) return;
         data = data.filter(item => item.dato !== dato);
         saveData();
         updateView();
@@ -568,9 +641,7 @@
         config.targetInde = Number(document.getElementById('config-target-inde').value) || DEFAULT_CONFIG.targetInde;
 
         saveConfig();
-        ensureDatesInPeriod();
         updateView();
-        alert('✅ Indstillinger er gemt.');
     }
 
     function sætAlleTilUde() {
@@ -587,7 +658,6 @@
     function resetTilStandard() {
         config = { ...DEFAULT_CONFIG };
         saveConfig();
-        data = loadData();
         updateConfigInputs();
         updateView();
     }
@@ -629,16 +699,15 @@
             } catch (err) {
                 alert('❌ Fejl ved import: ' + err.message);
             }
-
             event.target.value = '';
         };
         reader.readAsText(file);
     });
 
     function nulstilAlt() {
-        const confirmed = confirm('Er du sikker på, at du vil slette alle data?');
-        if (!confirmed) return;
-
+        if (!confirm('Slet ALLE data?')) return;
+        if (!confirm('Sidste chance - kan ikke fortrydes!')) return;
+        
         data = [];
         saveData();
         updateView();
