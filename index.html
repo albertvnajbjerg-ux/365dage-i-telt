@@ -5,13 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snorky Tracker</title>
     
-    <!-- Gør det muligt at gemme som en rigtig app på iPhone -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Snorky">
     
-    <!-- Genererer 🏕️ som app-ikon på din iPhones startskærm -->
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://w3.org viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏕️</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏕️</text></svg>">
 
     <style>
         :root {
@@ -80,7 +78,7 @@
         .stat-number.red {
             color: var(--secondary);
         }
-        .input-card {
+        .input-card, .history-card {
             background: var(--card);
             padding: 20px;
             border-radius: 12px;
@@ -117,11 +115,12 @@
             background-color: var(--primary);
             color: white;
         }
-        .history-card {
-            background: var(--card);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        .btn-sub {
+            background-color: #666;
+            color: white;
+            margin-top: 10px;
+            padding: 8px;
+            font-size: 0.85rem;
         }
         .history-list {
             list-style: none;
@@ -164,7 +163,7 @@
 
 <div class="container">
     <div class="logo-container">
-        <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://w3.org">
+        <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
             <circle cx="50" cy="50" r="46" fill="none" stroke="#2e7d32" stroke-width="4"/>
             <circle cx="50" cy="50" r="41" fill="#e8f5e9"/>
             <polygon points="25,65 40,40 55,65" fill="#a5d6a7"/>
@@ -214,54 +213,47 @@
     <div class="history-card">
         <h3 style="margin-top: 0;">Logbog</h3>
         <ul class="history-list" id="history-list"></ul>
+        <button class="btn-sub" onclick="eksporterData()">Eksporter data (Backup)</button>
     </div>
 </div>
 
 <script>
     document.getElementById('date-input').valueAsDate = new Date();
 
-    const BACKUP_KEY = 'snorkyDataBackup';
+    const KEY = 'snorkyData_v2';
     const FASTE_UDE_DAGE_FRA = '2026-08-23';
     const FASTE_UDE_DAGE_TIL = '2026-09-11';
 
     function hentData() {
-        for (const key of ['snorkyData', BACKUP_KEY]) {
-            try {
-                const gemt = JSON.parse(localStorage.getItem(key));
-                if (Array.isArray(gemt)) {
-                    return gemt.filter(d => d && typeof d.dato === 'string' && (d.type === 'ude' || d.type === 'inde'));
-                }
-            } catch (_) {
-                // Prøv backup, hvis primær data er beskadiget.
-            }
-        }
-        return [];
-    }
-
-    function gemData() {
-        const json = JSON.stringify(data);
         try {
-            localStorage.setItem(BACKUP_KEY, json);
-            localStorage.setItem('snorkyData', json);
-        } catch (_) {
-            // Appen kan stadig bruges, selv hvis browserens lager er fuldt.
+            const gemt = localStorage.getItem(KEY);
+            if (gemt) {
+                return JSON.parse(gemt);
+            }
+        } catch (e) {
+            console.error(e);
         }
-    }
-
-    function markerFasteUdeDage() {
+        
+        const initialData = [];
         const start = new Date(FASTE_UDE_DAGE_FRA + 'T00:00:00Z');
         const slut = new Date(FASTE_UDE_DAGE_TIL + 'T00:00:00Z');
 
-        for (let dag = start; dag <= slut; dag.setUTCDate(dag.getUTCDate() + 1)) {
+        for (let dag = new Date(start); dag <= slut; dag.setUTCDate(dag.getUTCDate() + 1)) {
             const dato = dag.toISOString().slice(0, 10);
-            const eksisterende = data.find(d => d.dato === dato);
-            if (eksisterende) eksisterende.type = 'ude';
-            else data.push({ dato, type: 'ude' });
+            initialData.push({ dato, type: 'ude' });
         }
+        return initialData;
     }
 
     let data = hentData();
-    markerFasteUdeDage();
+
+    function gemData() {
+        try {
+            localStorage.setItem(KEY, JSON.stringify(data));
+        } catch (e) {
+            console.error('Kunne ikke gemme data', e);
+        }
+    }
 
     function opdaterVisning() {
         data.sort((a, b) => new Date(b.dato) - new Date(a.dato));
@@ -283,8 +275,8 @@
                 let badgeClass = item.type === 'ude' ? 'badge-ude' : 'badge-inde';
                 let badgeText = item.type === 'ude' ? 'Ude' : 'Inde';
                 
-                let d = new Date(item.dato);
-                let formateretDato = d.getDate().toString().padStart(2, '0') + '-' + (d.getMonth() + 1).toString().padStart(2, '0') + '-' + d.getFullYear();
+                let parts = item.dato.split('-');
+                let formateretDato = parts[2] + '-' + parts[1] + '-' + parts[0];
 
                 listHTML += `
                     <li class="history-item">
@@ -298,7 +290,6 @@
             });
         }
         document.getElementById('history-list').innerHTML = listHTML;
-        gemData();
     }
 
     function tilfoejDag() {
@@ -317,16 +308,28 @@
         }
 
         data.push({ dato: datoInput, type: typeInput });
+        gemData();
         opdaterVisning();
     }
 
     function sletDag(index) {
         if(confirm('Er du sikker på, at du vil slette denne registrering?')) {
             data.splice(index, 1);
+            gemData();
             opdaterVisning();
         }
     }
 
+    function eksporterData() {
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'snorky-backup.json';
+        a.click();
+    }
+
+    gemData();
     opdaterVisning();
 </script>
 
