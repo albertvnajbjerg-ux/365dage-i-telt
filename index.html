@@ -78,7 +78,7 @@
         .stat-number.red {
             color: var(--secondary);
         }
-        .input-card, .history-card {
+        .input-card, .history-card, .config-card {
             background: var(--card);
             padding: 20px;
             border-radius: 12px;
@@ -93,7 +93,7 @@
             margin-bottom: 5px;
             font-weight: 600;
         }
-        input[type="date"], select {
+        input[type="date"], input[type="number"], select {
             width: 100%;
             padding: 10px;
             border: 1px solid #ddd;
@@ -115,8 +115,18 @@
             background-color: var(--primary);
             color: white;
         }
+        .btn-add:hover {
+            opacity: 0.9;
+        }
         .btn-sub {
             background-color: #666;
+            color: white;
+            margin-top: 10px;
+            padding: 8px;
+            font-size: 0.85rem;
+        }
+        .btn-danger {
+            background-color: var(--secondary);
             color: white;
             margin-top: 10px;
             padding: 8px;
@@ -157,6 +167,26 @@
             padding: 0 5px;
         }
         .btn-delete:hover { color: var(--secondary); }
+        .config-section h3 {
+            margin-top: 0;
+            color: var(--primary);
+            font-size: 1rem;
+        }
+        .config-fields {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .config-fields .form-group {
+            margin-bottom: 10px;
+        }
+        .config-fields label {
+            font-size: 0.9rem;
+        }
+        .config-fields input {
+            font-size: 0.9rem;
+            padding: 8px;
+        }
     </style>
 </head>
 <body>
@@ -180,7 +210,7 @@
     </div>
 
     <h1>Snorky Tracker</h1>
-    <p class="subtitle">⛺ 365 nætter i telt ud af 400 dage</p>
+    <p class="subtitle">⛺ <span id="subtitle-text">365 nætter i telt ud af 400 dage</span></p>
 
     <div class="stats-grid">
         <div class="stat-card">
@@ -192,6 +222,31 @@
             <div>Brugte fridage</div>
             <div class="stat-number red" id="count-inde">0</div>
             <div style="font-size: 0.8rem; color: #666;" id="left-inde">35 tilbage</div>
+        </div>
+    </div>
+
+    <div class="config-card">
+        <div class="config-section">
+            <h3>⚙️ Indstillinger</h3>
+            <div class="config-fields">
+                <div class="form-group">
+                    <label for="config-from">Start dato</label>
+                    <input type="date" id="config-from">
+                </div>
+                <div class="form-group">
+                    <label for="config-to">Slut dato</label>
+                    <input type="date" id="config-to">
+                </div>
+                <div class="form-group">
+                    <label for="config-target-ude">Mål ude dage</label>
+                    <input type="number" id="config-target-ude" value="365">
+                </div>
+                <div class="form-group">
+                    <label for="config-target-inde">Mål fridage</label>
+                    <input type="number" id="config-target-inde" value="35">
+                </div>
+            </div>
+            <button class="btn-add" onclick="gemIndstillinger()">Gem indstillinger</button>
         </div>
     </div>
 
@@ -213,47 +268,105 @@
     <div class="history-card">
         <h3 style="margin-top: 0;">Logbog</h3>
         <ul class="history-list" id="history-list"></ul>
-        <button class="btn-sub" onclick="eksporterData()">Eksporter data (Backup)</button>
+        <button class="btn-sub" onclick="eksporterData()">📥 Eksporter data</button>
+        <button class="btn-sub" onclick="importerData()">📤 Importér data</button>
+        <input type="file" id="file-input" accept=".json" style="display: none;">
+        <button class="btn-danger" onclick="nulstil()">🗑️ Slet alle data</button>
     </div>
 </div>
 
 <script>
-    document.getElementById('date-input').valueAsDate = new Date();
+    // Konfiguration
+    const CONFIG_KEY = 'snorkyConfig_v2';
+    const DATA_KEY = 'snorkyData_v2';
 
-    const KEY = 'snorkyData_v2';
-    const FASTE_UDE_DAGE_FRA = '2026-08-23';
-    const FASTE_UDE_DAGE_TIL = '2026-09-11';
+    let config = {
+        startDato: '2026-08-23',
+        slutDato: '2026-10-01',
+        targetUde: 365,
+        targetInde: 35
+    };
 
-    function hentData() {
+    function hentConfig() {
         try {
-            const gemt = localStorage.getItem(KEY);
+            const gemt = localStorage.getItem(CONFIG_KEY);
             if (gemt) {
                 return JSON.parse(gemt);
             }
         } catch (e) {
             console.error(e);
         }
-        
-        const initialData = [];
-        const start = new Date(FASTE_UDE_DAGE_FRA + 'T00:00:00Z');
-        const slut = new Date(FASTE_UDE_DAGE_TIL + 'T00:00:00Z');
+        return config;
+    }
 
-        for (let dag = new Date(start); dag <= slut; dag.setUTCDate(dag.getUTCDate() + 1)) {
-            const dato = dag.toISOString().slice(0, 10);
-            initialData.push({ dato, type: 'ude' });
+    function gemConfig() {
+        try {
+            localStorage.setItem(CONFIG_KEY, JSON.stringify(config));
+        } catch (e) {
+            console.error('Kunne ikke gemme config', e);
         }
-        return initialData;
+    }
+
+    function opdaterConfigUI() {
+        document.getElementById('config-from').value = config.startDato;
+        document.getElementById('config-to').value = config.slutDato;
+        document.getElementById('config-target-ude').value = config.targetUde;
+        document.getElementById('config-target-inde').value = config.targetInde;
+    }
+
+    function gemIndstillinger() {
+        config.startDato = document.getElementById('config-from').value;
+        config.slutDato = document.getElementById('config-to').value;
+        config.targetUde = parseInt(document.getElementById('config-target-ude').value) || 365;
+        config.targetInde = parseInt(document.getElementById('config-target-inde').value) || 35;
+        
+        gemConfig();
+        initierPeriode();
+        opdaterVisning();
+        alert('✅ Indstillinger gemt!');
+    }
+
+    function hentData() {
+        try {
+            const gemt = localStorage.getItem(DATA_KEY);
+            if (gemt) {
+                return JSON.parse(gemt);
+            }
+        } catch (e) {
+            console.error(e);
+        }
+        return [];
     }
 
     let data = hentData();
 
     function gemData() {
         try {
-            localStorage.setItem(KEY, JSON.stringify(data));
+            localStorage.setItem(DATA_KEY, JSON.stringify(data));
         } catch (e) {
             console.error('Kunne ikke gemme data', e);
         }
     }
+
+    function initierPeriode() {
+        const start = new Date(config.startDato + 'T00:00:00Z');
+        const slut = new Date(config.slutDato + 'T00:00:00Z');
+
+        for (let dag = new Date(start); dag <= slut; dag.setUTCDate(dag.getUTCDate() + 1)) {
+            const dato = dag.toISOString().slice(0, 10);
+            const eksisterende = data.find(d => d.dato === dato);
+            if (!eksisterende) {
+                data.push({ dato, type: 'ude' });
+            }
+        }
+        gemData();
+    }
+
+    config = hentConfig();
+    initierPeriode();
+
+    document.getElementById('date-input').valueAsDate = new Date();
+    opdaterConfigUI();
 
     function opdaterVisning() {
         data.sort((a, b) => new Date(b.dato) - new Date(a.dato));
@@ -262,10 +375,12 @@
         let indeDage = data.filter(d => d.type === 'inde').length;
 
         document.getElementById('count-ude').innerText = udeDage;
-        document.getElementById('left-ude').innerText = Math.max(0, 365 - udeDage) + " tilbage";
+        document.getElementById('left-ude').innerText = Math.max(0, config.targetUde - udeDage) + " tilbage";
 
         document.getElementById('count-inde').innerText = indeDage;
-        document.getElementById('left-inde').innerText = Math.max(0, 35 - indeDage) + " tilbage";
+        document.getElementById('left-inde').innerText = Math.max(0, config.targetInde - indeDage) + " tilbage";
+
+        document.getElementById('subtitle-text').innerText = `${config.targetUde} nætter i telt ud af ${config.targetUde + config.targetInde} dage`;
 
         let listHTML = '';
         if (data.length === 0) {
@@ -321,12 +436,55 @@
     }
 
     function eksporterData() {
-        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const eksportObj = { config, data };
+        const blob = new Blob([JSON.stringify(eksportObj, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'snorky-backup.json';
+        a.download = 'snorky-backup-' + new Date().toISOString().slice(0, 10) + '.json';
         a.click();
+    }
+
+    function importerData() {
+        document.getElementById('file-input').click();
+    }
+
+    document.getElementById('file-input').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            try {
+                const imported = JSON.parse(event.target.result);
+                if (imported.config && imported.data) {
+                    config = imported.config;
+                    data = imported.data;
+                    gemConfig();
+                    gemData();
+                    opdaterConfigUI();
+                    opdaterVisning();
+                    alert('✅ Data importeret succesfuldt!');
+                } else {
+                    alert('❌ Ugyldig backup-fil');
+                }
+            } catch (err) {
+                alert('❌ Fejl ved import: ' + err.message);
+            }
+        };
+        reader.readAsText(file);
+    });
+
+    function nulstil() {
+        if (confirm('⚠️ Er du HELT sikker? Dette kan ikke fortrydes!')) {
+            if (confirm('Sidste chance - alt data slettes!')) {
+                data = [];
+                gemData();
+                initierPeriode();
+                opdaterVisning();
+                alert('✅ Alle data slettet!');
+            }
+        }
     }
 
     gemData();
