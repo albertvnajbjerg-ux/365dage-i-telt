@@ -24,7 +24,9 @@
             --shadow: 0 8px 18px rgba(0,0,0,0.06);
         }
 
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
 
         body {
             margin: 0;
@@ -118,7 +120,9 @@
             margin: 3px 0;
         }
 
-        .stat-number.red { color: var(--secondary); }
+        .stat-number.red {
+            color: var(--secondary);
+        }
 
         .stat-meta {
             font-size: 0.75rem;
@@ -159,7 +163,9 @@
             transition: transform 0.12s ease, opacity 0.12s ease;
         }
 
-        button:active { transform: translateY(1px); }
+        button:active {
+            transform: translateY(1px);
+        }
 
         .btn-primary {
             background: var(--primary);
@@ -211,7 +217,9 @@
             justify-content: center;
         }
 
-        .day-pill:active { transform: scale(0.95); }
+        .day-pill:active {
+            transform: scale(0.95);
+        }
 
         .day-pill.ude {
             background: #e6f5e7;
@@ -242,7 +250,9 @@
             font-size: 0.9rem;
         }
 
-        .history-item:last-child { border-bottom: none; }
+        .history-item:last-child {
+            border-bottom: none;
+        }
 
         .history-left {
             display: flex;
@@ -261,8 +271,13 @@
             color: white;
         }
 
-        .badge-ude { background: var(--primary); }
-        .badge-inde { background: var(--secondary); }
+        .badge-ude {
+            background: var(--primary);
+        }
+
+        .badge-inde {
+            background: var(--secondary);
+        }
 
         .btn-delete {
             width: auto;
@@ -272,7 +287,9 @@
             padding: 4px 6px;
         }
 
-        .btn-delete:hover { color: var(--secondary); }
+        .btn-delete:hover {
+            color: var(--secondary);
+        }
 
         .muted {
             color: var(--muted);
@@ -338,7 +355,7 @@
             .title-group h1 {
                 font-size: 1.3rem;
             }
-            
+
             .stat-number {
                 font-size: 1.8rem;
             }
@@ -349,11 +366,14 @@
         }
     </style>
 </head>
+
 <body>
 
 <div class="container">
+
     <div class="header">
         <div class="logo-title">
+
             <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="50" cy="50" r="46" fill="none" stroke="#2e7d32" stroke-width="4"/>
                 <circle cx="50" cy="50" r="41" fill="#e8f5e9"/>
@@ -368,90 +388,151 @@
                 <path d="M35,28 L36,31 L39,31 L37,33 L38,36 L35,34 L32,36 L33,33 L31,31 L34,31 Z" fill="#fbc02d"/>
                 <path d="M65,24 L65.5,26 L67,26 L65.8,27 L66.3,28.5 L65,27.5 L63.7,28.5 L64.2,27 L63,26 L64.5,26 Z" fill="#fbc02d"/>
             </svg>
+
             <div class="title-group">
                 <h1>Snorky</h1>
                 <p id="subtitle-text">365 nætter i telt</p>
             </div>
+
         </div>
+
         <button class="btn-settings" onclick="toggleModal()">⚙️</button>
     </div>
 
     <div class="stats-grid">
+
         <div class="stat-card">
             <div class="label">Nætter i telt</div>
             <div class="stat-number" id="count-ude">0</div>
             <div class="stat-meta" id="left-ude">365 tilbage</div>
         </div>
+
         <div class="stat-card">
             <div class="label">Brugte fridage</div>
             <div class="stat-number red" id="count-inde">0</div>
             <div class="stat-meta" id="left-inde">35 tilbage</div>
         </div>
+
     </div>
 
     <div class="card">
+
         <div class="form-group">
             <label for="date-input">Registrer nat</label>
             <input type="date" id="date-input">
         </div>
+
         <div class="form-group">
             <label for="type-input">Type</label>
+
             <select id="type-input">
                 <option value="ude">Sover ude (Telt/Terrasse)</option>
                 <option value="inde">Sover inde (Fridag)</option>
             </select>
         </div>
+
         <button class="btn-primary" onclick="tilfoejDag()">Registrer</button>
+
     </div>
 
     <div class="card">
-        <h3 style="margin:0 0 6px; color: var(--primary-dark); font-size: 0.9rem;">Periode oversigt</h3>
+
+        <h3 style="margin:0 0 6px; color: var(--primary-dark); font-size: 0.9rem;">
+            Periode oversigt
+        </h3>
+
         <div id="day-grid" class="day-grid"></div>
+
     </div>
 
     <div class="card">
-        <h3 style="margin:0 0 6px; color: var(--primary-dark); font-size: 0.9rem;">Logbog</h3>
+
+        <h3 style="margin:0 0 6px; color: var(--primary-dark); font-size: 0.9rem;">
+            Logbog
+        </h3>
+
         <ul class="history-list" id="history-list"></ul>
+
     </div>
+
 </div>
 
+
 <div id="settings-modal" class="modal">
+
     <div class="modal-content">
+
         <button class="close-btn" onclick="toggleModal()">✕</button>
+
         <h2>Indstillinger</h2>
 
         <div class="settings-grid">
+
             <div class="form-group">
                 <label for="config-from">Start dato</label>
                 <input type="date" id="config-from">
             </div>
+
             <div class="form-group">
                 <label for="config-to">Slut dato</label>
                 <input type="date" id="config-to">
             </div>
+
             <div class="form-group">
                 <label for="config-target-ude">Mål ude dage</label>
                 <input type="number" id="config-target-ude" min="0" value="365">
             </div>
+
             <div class="form-group">
                 <label for="config-target-inde">Mål fridage</label>
                 <input type="number" id="config-target-inde" min="0" value="35">
             </div>
+
         </div>
 
         <div class="controls-row">
-            <button class="btn-primary" onclick="gemIndstillinger(); toggleModal();">Gem</button>
-            <button class="btn-ghost" onclick="sætAlleTilUde()">Sæt alle dage til ude</button>
-            <button class="btn-ghost" onclick="resetTilStandard()">Reset</button>
-            <button class="btn-secondary" onclick="eksporterData()">📥 Eksporter</button>
-            <button class="btn-secondary" onclick="importerData()">📤 Importér</button>
-            <input type="file" id="import-file" accept=".json" style="display:none;">
-            <button class="btn-danger" onclick="nulstilAlt()">🗑️ Slet alt</button>
+
+            <button class="btn-primary"
+                    onclick="gemIndstillinger(); toggleModal();">
+                Gem
+            </button>
+
+            <button class="btn-ghost" onclick="sætAlleTilUde()">
+                Sæt alle dage til ude
+            </button>
+
+            <button class="btn-ghost" onclick="resetTilStandard()">
+                Reset
+            </button>
+
+            <button class="btn-secondary" onclick="eksporterData()">
+                📥 Eksporter
+            </button>
+
+            <button class="btn-secondary" onclick="importerData()">
+                📤 Importér
+            </button>
+
+            <input
+                type="file"
+                id="import-file"
+                accept=".json"
+                style="display:none;"
+            >
+
+            <button class="btn-danger" onclick="nulstilAlt()">
+                🗑️ Slet alt
+            </button>
+
         </div>
+
     </div>
+
 </div>
 
+
 <script>
+
     const DATA_KEY = 'snorkyData_v2';
     const CONFIG_KEY = 'snorkyConfig_v2';
 
@@ -465,257 +546,828 @@
     let config = loadConfig();
     let data = loadData();
 
+
     function toggleModal() {
+
         const modal = document.getElementById('settings-modal');
+
         modal.classList.toggle('show');
+
     }
+
 
     function loadConfig() {
+
         try {
-            const saved = JSON.parse(localStorage.getItem(CONFIG_KEY));
-            if (saved && typeof saved === 'object') return { ...DEFAULT_CONFIG, ...saved };
+
+            const saved = JSON.parse(
+                localStorage.getItem(CONFIG_KEY)
+            );
+
+            if (saved && typeof saved === 'object') {
+
+                return {
+                    ...DEFAULT_CONFIG,
+                    ...saved
+                };
+
+            }
+
         } catch (_) {}
-        return { ...DEFAULT_CONFIG };
+
+        return {
+            ...DEFAULT_CONFIG
+        };
+
     }
+
 
     function saveConfig() {
-        localStorage.setItem(CONFIG_KEY, JSON.stringify(config));
+
+        localStorage.setItem(
+            CONFIG_KEY,
+            JSON.stringify(config)
+        );
+
     }
+
 
     function loadData() {
+
         try {
-            const saved = JSON.parse(localStorage.getItem(DATA_KEY));
+
+            const saved = JSON.parse(
+                localStorage.getItem(DATA_KEY)
+            );
+
             if (Array.isArray(saved)) {
-                return saved.filter(item => item && item.dato && (item.type === 'ude' || item.type === 'inde'));
+
+                return saved.filter(
+                    item =>
+                        item &&
+                        item.dato &&
+                        (
+                            item.type === 'ude' ||
+                            item.type === 'inde'
+                        )
+                );
+
             }
+
         } catch (_) {}
+
         return [];
+
     }
+
 
     function saveData() {
-        localStorage.setItem(DATA_KEY, JSON.stringify(data));
+
+        localStorage.setItem(
+            DATA_KEY,
+            JSON.stringify(data)
+        );
+
     }
+
 
     function formatDateDK(raw) {
+
         if (!raw) return '';
-        const [year, month, day] = raw.split('-').map(Number);
+
+        const [year, month, day] =
+            raw.split('-').map(Number);
+
         return `${String(day).padStart(2, '0')}-${String(month).padStart(2, '0')}-${year}`;
+
     }
+
 
     function dateKey(date) {
+
         return date.toISOString().slice(0, 10);
+
     }
+
 
     function getRangeDates(start, end) {
-        const result = [];
-        const startDate = new Date(start + 'T00:00:00Z');
-        const endDate = new Date(end + 'T00:00:00Z');
 
-        for (let d = new Date(startDate); d <= endDate; d.setUTCDate(d.getUTCDate() + 1)) {
+        const result = [];
+
+        const startDate =
+            new Date(start + 'T00:00:00Z');
+
+        const endDate =
+            new Date(end + 'T00:00:00Z');
+
+        for (
+            let d = new Date(startDate);
+            d <= endDate;
+            d.setUTCDate(d.getUTCDate() + 1)
+        ) {
+
             result.push(dateKey(d));
+
         }
+
         return result;
+
     }
+
 
     function ensureDatesInPeriod() {
-        const range = getRangeDates(config.startDato, config.slutDato);
+
+        const range =
+            getRangeDates(
+                config.startDato,
+                config.slutDato
+            );
+
         for (const iso of range) {
+
             if (!data.some(item => item.dato === iso)) {
-                data.push({ dato: iso, type: 'ude' });
+
+                data.push({
+                    dato: iso,
+                    type: 'ude'
+                });
+
             }
+
         }
+
         saveData();
+
     }
+
 
     function updateConfigInputs() {
-        document.getElementById('config-from').value = config.startDato;
-        document.getElementById('config-to').value = config.slutDato;
-        document.getElementById('config-target-ude').value = config.targetUde;
-        document.getElementById('config-target-inde').value = config.targetInde;
+
+        document.getElementById('config-from').value =
+            config.startDato;
+
+        document.getElementById('config-to').value =
+            config.slutDato;
+
+        document.getElementById('config-target-ude').value =
+            config.targetUde;
+
+        document.getElementById('config-target-inde').value =
+            config.targetInde;
+
     }
+
 
     function renderStats() {
-        const udeDage = data.filter(item => item.type === 'ude').length;
-        const indeDage = data.filter(item => item.type === 'inde').length;
 
-        document.getElementById('count-ude').textContent = udeDage;
-        document.getElementById('count-inde').textContent = indeDage;
-        document.getElementById('left-ude').textContent = Math.max(0, config.targetUde - udeDage) + ' tilbage';
-        document.getElementById('left-inde').textContent = Math.max(0, config.targetInde - indeDage) + ' tilbage';
-        document.getElementById('subtitle-text').textContent = `${config.targetUde} nætter i telt`;
+        const udeDage =
+            data.filter(item => item.type === 'ude').length;
+
+        const indeDage =
+            data.filter(item => item.type === 'inde').length;
+
+        document.getElementById('count-ude').textContent =
+            udeDage;
+
+        document.getElementById('count-inde').textContent =
+            indeDage;
+
+        document.getElementById('left-ude').textContent =
+            Math.max(
+                0,
+                config.targetUde - udeDage
+            ) + ' tilbage';
+
+        document.getElementById('left-inde').textContent =
+            Math.max(
+                0,
+                config.targetInde - indeDage
+            ) + ' tilbage';
+
+        document.getElementById('subtitle-text').textContent =
+            `${config.targetUde} nætter i telt`;
+
     }
+
 
     function renderDayGrid() {
-        const grid = document.getElementById('day-grid');
+
+        const grid =
+            document.getElementById('day-grid');
+
         grid.innerHTML = '';
 
-        const range = getRangeDates(config.startDato, config.slutDato);
+        const range =
+            getRangeDates(
+                config.startDato,
+                config.slutDato
+            );
+
         range.forEach((iso) => {
-            const item = data.find(d => d.dato === iso);
-            const type = item ? item.type : 'ude';
-            
-            const btn = document.createElement('button');
+
+            const item =
+                data.find(d => d.dato === iso);
+
+            const type =
+                item ? item.type : 'ude';
+
+            const btn =
+                document.createElement('button');
+
             btn.type = 'button';
-            btn.className = `day-pill ${type}`;
-            btn.textContent = new Date(iso + 'T00:00:00Z').getUTCDate();
-            btn.title = formatDateDK(iso);
-            btn.addEventListener('click', () => toggleDateType(iso));
+
+            btn.className =
+                `day-pill ${type}`;
+
+            btn.textContent =
+                new Date(
+                    iso + 'T00:00:00Z'
+                ).getUTCDate();
+
+            btn.title =
+                formatDateDK(iso);
+
+            btn.addEventListener(
+                'click',
+                () => toggleDateType(iso)
+            );
+
             grid.appendChild(btn);
+
         });
+
     }
+
 
     function renderHistory() {
-        const list = document.getElementById('history-list');
-        const sorted = [...data].sort((a, b) => new Date(b.dato) - new Date(a.dato));
+
+        const list =
+            document.getElementById('history-list');
+
+        const sorted =
+            [...data].sort(
+                (a, b) =>
+                    new Date(b.dato) -
+                    new Date(a.dato)
+            );
 
         if (!sorted.length) {
-            list.innerHTML = '<li class="muted" style="padding: 12px 0; text-align: center;">Ingen registreringer endnu.</li>';
+
+            list.innerHTML =
+                '<li class="muted" style="padding: 12px 0; text-align: center;">Ingen registreringer endnu.</li>';
+
             return;
+
         }
 
-        list.innerHTML = sorted.map((item) => {
-            const badgeClass = item.type === 'ude' ? 'badge-ude' : 'badge-inde';
-            const badgeText = item.type === 'ude' ? 'Ude' : 'Inde';
-            return `
-                <li class="history-item">
-                    <div class="history-left">
-                        <span class="badge ${badgeClass}">${badgeText}</span>
-                        <span>${formatDateDK(item.dato)}</span>
-                    </div>
-                    <button class="btn-delete" onclick="sletDag('${item.dato}')">✕</button>
-                </li>
-            `;
-        }).join('');
+        list.innerHTML =
+            sorted.map((item) => {
+
+                const badgeClass =
+                    item.type === 'ude'
+                        ? 'badge-ude'
+                        : 'badge-inde';
+
+                const badgeText =
+                    item.type === 'ude'
+                        ? 'Ude'
+                        : 'Inde';
+
+                return `
+                    <li class="history-item">
+
+                        <div class="history-left">
+
+                            <span class="badge ${badgeClass}">
+                                ${badgeText}
+                            </span>
+
+                            <span>
+                                ${formatDateDK(item.dato)}
+                            </span>
+
+                        </div>
+
+                        <button
+                            class="btn-delete"
+                            onclick="sletDag('${item.dato}')">
+                            ✕
+                        </button>
+
+                    </li>
+                `;
+
+            }).join('');
+
     }
+
 
     function updateView() {
+
         ensureDatesInPeriod();
+
         renderStats();
+
         renderDayGrid();
+
         renderHistory();
+
         saveData();
+
     }
 
+
     function tilfoejDag() {
-        const dato = document.getElementById('date-input').value;
-        const type = document.getElementById('type-input').value;
+
+        const dato =
+            document.getElementById('date-input').value;
+
+        const type =
+            document.getElementById('type-input').value;
 
         if (!dato) {
+
             alert('Vælg venligst en dato.');
+
+            return;
+
+        }
+
+        const existing =
+            data.find(
+                item => item.dato === dato
+            );
+
+        if (existing) {
+
+            existing.type = type;
+
+        } else {
+
+            data.push({
+                dato,
+                type
+            });
+
+        }
+
+        saveData();
+
+        updateView();
+
+    }
+
+
+    /*
+     * NY FUNKTION
+     *
+     * Kan registrere dagens nat direkte fra URL'en.
+     *
+     * Eksempel:
+     * ?type=ude
+     *
+     * eller:
+     * ?type=inde
+     */
+    function registrerFraUrl() {
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+        let type =
+            params.get('type');
+
+        /*
+         * Accepter også et forkert/alternativt format
+         * hvis URL'en ender med =ude eller =inde.
+         */
+        if (!type) {
+
+            const pathMatch =
+                window.location.pathname.match(
+                    /=(ude|inde)\/?$/i
+                );
+
+            if (pathMatch) {
+
+                type =
+                    pathMatch[1].toLowerCase();
+
+            }
+
+        }
+
+        /*
+         * Hvis URL'en ikke indeholder
+         * type=ude eller type=inde,
+         * gør vi ingenting.
+         */
+        if (
+            type !== 'ude' &&
+            type !== 'inde'
+        ) {
+
+            return;
+
+        }
+
+        /*
+         * Find dagens dato i dansk/lokal tid.
+         *
+         * Vi bruger IKKE toISOString()
+         * her, fordi UTC kan give forkert dato
+         * omkring midnat.
+         */
+        const nu = new Date();
+
+        const dato = [
+
+            nu.getFullYear(),
+
+            String(
+                nu.getMonth() + 1
+            ).padStart(2, '0'),
+
+            String(
+                nu.getDate()
+            ).padStart(2, '0')
+
+        ].join('-');
+
+
+        /*
+         * Find dagens eksisterende registrering.
+         */
+        const existing =
+            data.find(
+                item => item.dato === dato
+            );
+
+
+        /*
+         * Hvis dagen allerede findes,
+         * ændrer vi bare typen.
+         */
+        if (existing) {
+
+            existing.type = type;
+
+        } else {
+
+            /*
+             * Ellers opretter vi dagen.
+             */
+            data.push({
+                dato,
+                type
+            });
+
+        }
+
+
+        /*
+         * Gem registreringen.
+         */
+        saveData();
+
+        /*
+         * Opdater hele siden.
+         */
+        updateView();
+
+
+        /*
+         * Fjern ?type=ude / ?type=inde
+         * fra adressen uden at genindlæse siden.
+         *
+         * Det betyder, at hvis siden senere
+         * genindlæses normalt, registrerer den
+         * ikke dagen igen fra URL'en.
+         */
+        window.history.replaceState(
+            {},
+            document.title,
+            window.location.pathname
+        );
+
+    }
+
+
+    function toggleDateType(iso) {
+
+        const item =
+            data.find(
+                d => d.dato === iso
+            );
+
+        if (!item) {
+
+            data.push({
+                dato: iso,
+                type: 'inde'
+            });
+
+        } else {
+
+            item.type =
+                item.type === 'ude'
+                    ? 'inde'
+                    : 'ude';
+
+        }
+
+        saveData();
+
+        updateView();
+
+    }
+
+
+    function sletDag(dato) {
+
+        if (
+            !confirm(
+                'Slet denne registrering?'
+            )
+        ) {
             return;
         }
 
-        const existing = data.find(item => item.dato === dato);
-        if (existing) {
-            existing.type = type;
-        } else {
-            data.push({ dato, type });
-        }
+        data =
+            data.filter(
+                item => item.dato !== dato
+            );
 
         saveData();
+
         updateView();
+
     }
 
-    function toggleDateType(iso) {
-        const item = data.find(d => d.dato === iso);
-        if (!item) {
-            data.push({ dato: iso, type: 'inde' });
-        } else {
-            item.type = item.type === 'ude' ? 'inde' : 'ude';
-        }
-        saveData();
-        updateView();
-    }
-
-    function sletDag(dato) {
-        if (!confirm('Slet denne registrering?')) return;
-        data = data.filter(item => item.dato !== dato);
-        saveData();
-        updateView();
-    }
 
     function gemIndstillinger() {
-        config.startDato = document.getElementById('config-from').value || DEFAULT_CONFIG.startDato;
-        config.slutDato = document.getElementById('config-to').value || DEFAULT_CONFIG.slutDato;
-        config.targetUde = Number(document.getElementById('config-target-ude').value) || DEFAULT_CONFIG.targetUde;
-        config.targetInde = Number(document.getElementById('config-target-inde').value) || DEFAULT_CONFIG.targetInde;
+
+        config.startDato =
+            document.getElementById(
+                'config-from'
+            ).value ||
+            DEFAULT_CONFIG.startDato;
+
+        config.slutDato =
+            document.getElementById(
+                'config-to'
+            ).value ||
+            DEFAULT_CONFIG.slutDato;
+
+        config.targetUde =
+            Number(
+                document.getElementById(
+                    'config-target-ude'
+                ).value
+            ) ||
+            DEFAULT_CONFIG.targetUde;
+
+        config.targetInde =
+            Number(
+                document.getElementById(
+                    'config-target-inde'
+                ).value
+            ) ||
+            DEFAULT_CONFIG.targetInde;
 
         saveConfig();
+
         updateView();
+
     }
+
 
     function sætAlleTilUde() {
-        const range = getRangeDates(config.startDato, config.slutDato);
+
+        const range =
+            getRangeDates(
+                config.startDato,
+                config.slutDato
+            );
+
         for (const iso of range) {
-            const item = data.find(d => d.dato === iso);
-            if (item) item.type = 'ude';
-            else data.push({ dato: iso, type: 'ude' });
+
+            const item =
+                data.find(
+                    d => d.dato === iso
+                );
+
+            if (item) {
+
+                item.type = 'ude';
+
+            } else {
+
+                data.push({
+                    dato: iso,
+                    type: 'ude'
+                });
+
+            }
+
         }
+
         saveData();
+
         updateView();
+
     }
+
 
     function resetTilStandard() {
-        config = { ...DEFAULT_CONFIG };
+
+        config = {
+            ...DEFAULT_CONFIG
+        };
+
         saveConfig();
+
         updateConfigInputs();
+
         updateView();
+
     }
+
 
     function eksporterData() {
-        const payload = JSON.stringify({ config, data }, null, 2);
-        const blob = new Blob([payload], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
+
+        const payload =
+            JSON.stringify(
+                {
+                    config,
+                    data
+                },
+                null,
+                2
+            );
+
+        const blob =
+            new Blob(
+                [payload],
+                {
+                    type: 'application/json'
+                }
+            );
+
+        const url =
+            URL.createObjectURL(blob);
+
+        const a =
+            document.createElement('a');
+
         a.href = url;
-        a.download = 'snorky-backup.json';
+
+        a.download =
+            'snorky-backup.json';
+
         a.click();
+
         URL.revokeObjectURL(url);
+
     }
+
 
     function importerData() {
-        document.getElementById('import-file').click();
+
+        document
+            .getElementById('import-file')
+            .click();
+
     }
 
-    document.getElementById('import-file').addEventListener('change', function (event) {
-        const file = event.target.files[0];
-        if (!file) return;
 
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            try {
-                const imported = JSON.parse(e.target.result);
-                if (imported && imported.data) {
-                    config = { ...DEFAULT_CONFIG, ...(imported.config || {}) };
-                    data = Array.isArray(imported.data) ? imported.data : [];
-                    saveConfig();
-                    saveData();
-                    updateConfigInputs();
-                    updateView();
-                    alert('✅ Backup importeret.');
-                } else {
-                    alert('❌ Ugyldig backup-fil.');
-                }
-            } catch (err) {
-                alert('❌ Fejl ved import: ' + err.message);
+    document
+        .getElementById('import-file')
+        .addEventListener(
+            'change',
+            function (event) {
+
+                const file =
+                    event.target.files[0];
+
+                if (!file) return;
+
+                const reader =
+                    new FileReader();
+
+                reader.onload =
+                    function (e) {
+
+                        try {
+
+                            const imported =
+                                JSON.parse(
+                                    e.target.result
+                                );
+
+                            if (
+                                imported &&
+                                imported.data
+                            ) {
+
+                                config = {
+                                    ...DEFAULT_CONFIG,
+                                    ...(imported.config || {})
+                                };
+
+                                data =
+                                    Array.isArray(
+                                        imported.data
+                                    )
+                                        ? imported.data
+                                        : [];
+
+                                saveConfig();
+
+                                saveData();
+
+                                updateConfigInputs();
+
+                                updateView();
+
+                                alert(
+                                    '✅ Backup importeret.'
+                                );
+
+                            } else {
+
+                                alert(
+                                    '❌ Ugyldig backup-fil.'
+                                );
+
+                            }
+
+                        } catch (err) {
+
+                            alert(
+                                '❌ Fejl ved import: ' +
+                                err.message
+                            );
+
+                        }
+
+                        event.target.value = '';
+
+                    };
+
+                reader.readAsText(file);
+
             }
-            event.target.value = '';
-        };
-        reader.readAsText(file);
-    });
+        );
+
 
     function nulstilAlt() {
-        if (!confirm('Slet ALLE data?')) return;
-        if (!confirm('Sidste chance - kan ikke fortrydes!')) return;
-        
+
+        if (
+            !confirm(
+                'Slet ALLE data?'
+            )
+        ) {
+            return;
+        }
+
+        if (
+            !confirm(
+                'Sidste chance - kan ikke fortrydes!'
+            )
+        ) {
+            return;
+        }
+
         data = [];
+
         saveData();
+
         updateView();
+
     }
 
-    document.getElementById('date-input').valueAsDate = new Date();
+
+    /*
+     * Normal opstart.
+     */
+    document
+        .getElementById('date-input')
+        .valueAsDate = new Date();
+
     updateConfigInputs();
+
     updateView();
+
+
+    /*
+     * Tjek til sidst om siden blev åbnet
+     * med ?type=ude eller ?type=inde.
+     */
+    registrerFraUrl();
+
 </script>
 
 </body>
