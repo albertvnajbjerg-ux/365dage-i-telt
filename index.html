@@ -74,6 +74,11 @@
             font-size: 0.8rem;
         }
 
+        .app-version {
+            font-size: 0.65rem !important;
+            color: var(--primary) !important;
+        }
+
         .btn-settings {
             background: none;
             border: 1px solid var(--line);
@@ -392,6 +397,7 @@
             <div class="title-group">
                 <h1>Snorky</h1>
                 <p id="subtitle-text">365 nætter i telt</p>
+                <p id="app-version" class="app-version">Opdateret version</p>
             </div>
 
         </div>
@@ -535,6 +541,7 @@
 
     const DATA_KEY = 'snorkyData_v2';
     const CONFIG_KEY = 'snorkyConfig_v2';
+    const APP_VERSION = '2026-10-25.1';
 
     const DEFAULT_CONFIG = {
         startDato: '2026-08-23',
@@ -602,15 +609,7 @@
 
             if (Array.isArray(saved)) {
 
-                return saved.filter(
-                    item =>
-                        item &&
-                        item.dato &&
-                        (
-                            item.type === 'ude' ||
-                            item.type === 'inde'
-                        )
-                );
+                return normaliserData(saved);
 
             }
 
@@ -621,7 +620,27 @@
     }
 
 
+    function normaliserData(items) {
+
+        return [...new Map(
+            items
+                .filter(item =>
+                    item &&
+                    item.dato &&
+                    (item.type === 'ude' || item.type === 'inde')
+                )
+                .map(item => [item.dato, {
+                    dato: item.dato,
+                    type: item.type
+                }])
+        ).values()];
+
+    }
+
+
     function saveData() {
+
+        data = normaliserData(data);
 
         localStorage.setItem(
             DATA_KEY,
@@ -646,6 +665,26 @@
     function dateKey(date) {
 
         return date.toISOString().slice(0, 10);
+
+    }
+
+
+    function localDateKey(date = new Date()) {
+
+        return [
+            date.getFullYear(),
+            String(date.getMonth() + 1).padStart(2, '0'),
+            String(date.getDate()).padStart(2, '0')
+        ].join('-');
+
+    }
+
+
+    function shiftDate(iso, days) {
+
+        const date = new Date(iso + 'T12:00:00');
+        date.setDate(date.getDate() + days);
+        return localDateKey(date);
 
     }
 
@@ -677,20 +716,19 @@
 
     function ensureDatesInPeriod() {
 
-        const range =
-            getRangeDates(
-                config.startDato,
-                config.slutDato
-            );
+        // Manglende dage bliver automatisk ude. Fremtidige dage oprettes ikke.
+        const yesterday = shiftDate(localDateKey(), -1);
+        const end = config.slutDato < yesterday
+            ? config.slutDato
+            : yesterday;
 
-        for (const iso of range) {
+        if (config.startDato > end) return;
+
+        for (const iso of getRangeDates(config.startDato, end)) {
 
             if (!data.some(item => item.dato === iso)) {
 
-                data.push({
-                    dato: iso,
-                    type: 'ude'
-                });
+                data.push({ dato: iso, type: 'ude' });
 
             }
 
@@ -1281,7 +1319,7 @@
                                     Array.isArray(
                                         imported.data
                                     )
-                                        ? imported.data
+                                        ? normaliserData(imported.data)
                                         : [];
 
                                 saveConfig();
@@ -1359,8 +1397,13 @@
 
     updateConfigInputs();
 
+    document.getElementById('app-version').textContent =
+        `Opdateret version ${APP_VERSION}`;
+
     updateView();
 
+
+    // Ved opstart udfyldes alle manglende dage til og med i går som ude.
 
     /*
      * Tjek til sidst om siden blev åbnet
