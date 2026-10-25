@@ -471,6 +471,7 @@
         <button class="close-btn" onclick="toggleModal()">✕</button>
 
         <h2>Indstillinger</h2>
+        <p id="settings-version" class="muted">Version</p>
 
         <div class="settings-grid">
 
@@ -1399,6 +1400,8 @@
 
     document.getElementById('app-version').textContent =
         `Opdateret version ${APP_VERSION}`;
+    document.getElementById('settings-version').textContent =
+        `App-version: ${APP_VERSION}`;
 
     updateView();
 
